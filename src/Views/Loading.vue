@@ -35,7 +35,6 @@ export default {
 .loadEffect .ld-span{
     display: inline-block;
     width: 20px;
-
     height: 20px;
     border-radius: 50%;
     background: #67e7d5;
