@@ -24,13 +24,14 @@ export default {
   mounted(){
     //检查是否存在session
     //cookie操作方法在源码里有或者参考网上的即可
-    if(!this.getCookie('session')){
+/*    if(!this.getCookie('session')){
       //如果没有登录状态则跳转到登录页
       this.$router.push('/login');
     }else{
       //否则跳转到登录后的页面
-      //this.$router.push('/user_info');
-    }
+      this.$router.push('/home');
+    }*/
+    this.$router.push('/');
   },
   methods:{
 
@@ -46,39 +47,25 @@ export default {
       this.isLoging = true;
   		//一般要跟后端了解密码的加密规则
   		//这里例子用的哈希算法来自./js/sha1.min.js
-  		let password_sha = hex_sha1(hex_sha1( this.password ));
+/*  		let password_sha = hex_sha1(hex_sha1( this.password ));
 
   		//需要想后端发送的登录参数
   		let loginParam = {
   			account: this.account,
   			password_sha
-  		}
+  		}*/
 
       //设置在登录状态
 
-
-  		//请求后端,比如:
-  		/*this.$http.post( 'example.com/login.php', {
-  		param: loginParam).then((response) => {
-        if(response.data.code == 1){
-          let expireDays = 1000 * 60 * 60 * 24 * 15;
-          this.setCookie('session', response.data.session, expireDays);
-          //登录成功后
-          this.$router.push('/user_info');
-        }
-	    }, (response) => {
-	        //Error
-	    });
-  		*/
 
       //演示用
   		setTimeout(()=>{
         //登录状态15天后过期
         let expireDays = 1000 * 60 * 60 * 24 * 15;
-  			this.setCookie('session','blablablablabla...', expireDays);
+  			//this.setCookie('session','blablablablabla...', expireDays);
         this.isLoging = false;
         //登录成功后
-  			this.$router.push('/user_info/');
+  			this.$router.push('/home/');
   		},3000)
   	}
   }

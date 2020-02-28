@@ -27,9 +27,12 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
+      cesium: path.resolve(__dirname, '../node_modules/cesium/Source')
     }
   },
   module: {
+    unknownContextCritical: false,
+    unknownContextRegExp: /^.\/.*$/,
     rules: [
       {
         test: /\.vue$/,

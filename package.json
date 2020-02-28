@@ -10,6 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "cesium": "^1.66.0",
     "node-sass": "^4.13.1",
     "vue": "^2.5.2",
     "vue-qart": "^2.2.0",

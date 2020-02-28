@@ -64,7 +64,15 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         to: config.dev.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+    // Copy Cesium Assets, Widgets, and Workers to a static directory
+    new CopyWebpackPlugin([ { from: path.join('node_modules/cesium/Source', '../Build/Cesium/Workers'), to: 'Workers' } ]),
+    new CopyWebpackPlugin([ { from: path.join('node_modules/cesium/Source', 'Assets'), to: 'Assets' } ]),
+    new CopyWebpackPlugin([ { from: path.join('node_modules/cesium/Source', 'Widgets'), to: 'Widgets' } ]),
+    new webpack.DefinePlugin({
+      // Define relative base path in cesium for loading assets
+      CESIUM_BASE_URL: JSON.stringify('')
+    })
   ]
 })
 
