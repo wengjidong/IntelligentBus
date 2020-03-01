@@ -15,8 +15,19 @@
     },
     mounted () {
       this.$nextTick(() => {
-        const viewer = new Cesium.Viewer('cesiumContainer')
-        console.log('viewer: ', viewer)
+        const viewer = new Cesium.Viewer('cesiumContainer',{
+          geocoder:false,
+          homeButton:false,
+          sceneModePicker:false,
+          navigationHelpButton:false,
+          animation:false,
+          timeline:false,
+          baseLayerPicker:false,
+          fullscreenButton:false,
+          vrButton:false
+        })
+        //// 去除左下角的logo
+        viewer._cesiumWidget._creditContainer.style.display="none";
       })
     },
 

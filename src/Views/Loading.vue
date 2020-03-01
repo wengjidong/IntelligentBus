@@ -17,7 +17,6 @@
 export default {
   name: 'Loading',
   props: ["marginTop"]
-
 }
 </script>
 
@@ -25,11 +24,11 @@ export default {
 .loadEffect{
     width: 100px;
     height: 100px;
-    position: relative;
+    position: absolute;
     margin: 0 auto;
-    position: relative;
-    top:-50px;
-    margin-top:50%;
+    top:-45%;
+    left:45%;
+    margin-top:60%;
     transform: scale(.5)
 }
 .loadEffect .ld-span{

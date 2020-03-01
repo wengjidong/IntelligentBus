@@ -7,11 +7,12 @@
       <input type="password" placeholder="Password" class="log-input"  v-model="password"><br/>
       <a href="javascript:;" class="log-btn" @click="login">Login</a>
     </div>
+    <Loading v-if="isLoging"></Loading>
   </div>
 </template>
 
 <script>
-  import VueQArt from 'vue-qart'
+  import Loading from './Loading.vue'
 export default {
   name: 'Login',
   data(){
@@ -20,6 +21,9 @@ export default {
   		account: 'gis',
   		password: 'gis'
   	}
+  },
+  components:{
+    Loading
   },
   mounted(){
     //检查是否存在session
@@ -44,6 +48,7 @@ export default {
 
   	//登录请求
   	toLogin(){
+  	  debugger
       this.isLoging = true;
   		//一般要跟后端了解密码的加密规则
   		//这里例子用的哈希算法来自./js/sha1.min.js
@@ -63,9 +68,10 @@ export default {
         //登录状态15天后过期
         let expireDays = 1000 * 60 * 60 * 24 * 15;
   			//this.setCookie('session','blablablablabla...', expireDays);
-        this.isLoging = false;
+
         //登录成功后
   			this.$router.push('/home/');
+        this.isLoging = false;
   		},3000)
   	}
   }
@@ -80,7 +86,7 @@ export default {
     background: url(../images/bg.png) no-repeat;
     background-size: 100% 100%;
   }
-  .log-email{position: absolute;text-align: center; top: 40%;left:10%}
+  .log-email{position: absolute;text-align: center; top: 40%;left:40%}
   .log-input{width: 370px;overflow: hidden; padding: 0 15px;font-size: 13px; border: 1px solid #EBEBEB; margin:0 auto 15px; height: 48px; line-height: 48px; -webkit-border-radius: 5px;}
   .log-btn{width:402px; display: block; text-align: left; line-height: 50px;margin:0 auto 15px; height:50px; color:#fff; font-size:13px;-webkit-border-radius: 5px; background-color: #50e3ce;
     -moz-border-radius: 5px;
