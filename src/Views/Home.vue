@@ -31,7 +31,7 @@
         viewer._cesiumWidget._creditContainer.style.display="none";
 // 1. 通过top-down视图设置位置。
         viewer.camera.setView({
-          destination : Cesium.Cartesian3.fromDegrees(117.16, 32.71, 300000.0)
+          destination : Cesium.Cartesian3.fromDegrees(117.2764, 31.868, 9000.0)
         });
 
 // 2 通过方位角、俯仰角、滚动角设置视图。ddddddd
