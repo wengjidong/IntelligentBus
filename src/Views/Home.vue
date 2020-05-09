@@ -6,7 +6,7 @@
 
 <script>
   // 导出组件
-
+  import { getQuatoSetList } from '@/api/basic'
   import 'cesium/Widgets/widgets.css'
   export default {
     name: "home",
@@ -14,6 +14,9 @@
       return {};
     },
     mounted () {
+      getQuatoSetList().then(response=>{
+        debugger
+      })
       this.$nextTick(() => {
         Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0ZDgxYjkxMy05OWI2LTRkYTEtYjA4ZC1kN2Q4Yzc2NzM5M2QiLCJpZCI6MTI5MDAsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1NjIxMzc1NzF9.mU7f3eFJZxPtESiMyetyp4-4JlvB6l-euHELB5q0p_I'
         const viewer = new Cesium.Viewer('cesiumContainer',{
