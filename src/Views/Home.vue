@@ -30,16 +30,16 @@
         //// 去除左下角的logo
         viewer._cesiumWidget._creditContainer.style.display="none";
 // 1. 通过top-down视图设置位置。
-        viewer.camera.setView({
+/*        viewer.camera.setView({
           destination : Cesium.Cartesian3.fromDegrees(117.2764, 31.868, 9000.0)
-        });
+        });*/
 
 // 2 通过方位角、俯仰角、滚动角设置视图。ddddddd
         viewer.camera.setView({
-          destination : cartesianPosition,
+          destination : Cesium.Cartesian3.fromDegrees(117.2764, 31.868, 9000.0),
           orientation: {
-            heading : Cesium.Math.toRadians(90), // east, default value is 0.0 (north)
-            pitch : Cesium.Math.toRadians(90),    // default value (looking down)
+            heading : Cesium.Math.toRadians(0), // east, default value is 0.0 (north)
+            pitch : Cesium.Math.toRadians(-90),    // default value (looking down)
             roll : 0.0                             // default value
           }
         });
