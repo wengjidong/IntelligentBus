@@ -38,7 +38,7 @@
         viewer.camera.setView({
           destination : cartesianPosition,
           orientation: {
-            heading : Cesium.Math.toRadians(0), // east, default value is 0.0 (north)
+            heading : Cesium.Math.toRadians(90), // east, default value is 0.0 (north)
             pitch : Cesium.Math.toRadians(90),    // default value (looking down)
             roll : 0.0                             // default value
           }
