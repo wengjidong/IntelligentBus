@@ -1,6 +1,10 @@
 <template>
-  <div>
-    <div id="cesiumContainer"></div>
+  <div id="cesiumContainer" class="home">
+    <div class="home-top">
+      <div style="line-height:10px; width: 100%;text-align: center;">
+        <span class="span-one"></span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -53,7 +57,22 @@
 </script>
 
 <style scoped>
+  .home {
+    width: 100%;
+    height: 100vh;
+  }
   #cesiumContainer {
     width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+  }
+  .home-top {
+    background-size:100% 100%;
+    padding-top: 15px;
+    width: 100%;
+    height: 50px;
+    color: #ffffff;
+    background-image: url('../images/top.png');
+    background-repeat:  repeat-x;
+    position: absolute;
+    z-index: 100;
   }
 </style>
