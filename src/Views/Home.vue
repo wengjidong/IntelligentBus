@@ -1,10 +1,8 @@
 <template>
   <div id="cesiumContainer" class="home">
     <div class="home-top">
-      <div style="line-height:10px; width: 100%;text-align: center;">
-        <span class="span-one"></span>
-      </div>
     </div>
+    <div class="menu"></div>
   </div>
 </template>
 
@@ -74,5 +72,15 @@
     background-repeat:  repeat-x;
     position: absolute;
     z-index: 100;
+  }
+  .menu{
+    height: 100%;
+    vertical-align: top;
+    margin-left: 5rem;
+    font-size: 1rem;
+    color: #ade8ff;
+    font-weight: 500;
+    text-align: center;
+    letter-spacing: 2px;
   }
 </style>
