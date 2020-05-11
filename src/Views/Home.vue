@@ -1,8 +1,14 @@
 <template>
   <div id="cesiumContainer" class="home">
     <div class="home-top">
+      <div class="menu">
+        <div class="menu-li">数据展示</div>
+        <div class="menu-li">数据展示</div>
+        <div class="menu-li">数据展示</div>
+        <div class="menu-li">数据展示</div>
+      </div>
     </div>
-    <div class="menu"></div>
+
   </div>
 </template>
 
@@ -64,7 +70,6 @@
   }
   .home-top {
     background-size:100% 100%;
-    padding-top: 15px;
     width: 100%;
     height: 50px;
     color: #ffffff;
@@ -73,14 +78,16 @@
     position: absolute;
     z-index: 100;
   }
-  .menu{
+  .menu-li{
+    position: relative;
     height: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: inline-block;
     vertical-align: top;
-    margin-left: 5rem;
-    font-size: 1rem;
-    color: #ade8ff;
-    font-weight: 500;
-    text-align: center;
-    letter-spacing: 2px;
+    min-width: 4.6875rem;
+    margin-left: 4.6875rem;
+    border-bottom: .20833rem solid transparent;
+    cursor: pointer;
   }
 </style>
