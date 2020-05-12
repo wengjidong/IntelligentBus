@@ -119,8 +119,14 @@
     font-size:20px;
   }
   .drop-down-content{
+    position:absolute;
+    margin-top: 56px;
+    left:24.89%;
     padding: 0;
     display: inline-block;
+  }
+  ul{
+    list-style: none;
   }
   ul a{
     display: block;
