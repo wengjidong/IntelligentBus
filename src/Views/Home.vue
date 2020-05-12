@@ -2,10 +2,18 @@
   <div id="cesiumContainer" class="home">
     <div class="home-top">
       <div class="menu">
-        <div class="menu-li">数据展示</div>
-        <div class="menu-li">数据展示</div>
-        <div class="menu-li">数据展示</div>
-        <div class="menu-li">数据展示</div>
+        <div class="menu-li"><span class="menu-title">数据展示</span></div>
+        <div class="menu-li">
+          <span class="menu-title">应用功能
+          </span>
+          <ul class="drop-down-content">
+            <li><a href="#">我是1</a></li>
+            <li><a href="#">我是2</a></li>
+            <li><a href="#">我是3</a></li>
+          </ul>
+        </div>
+        <div class="menu-li"><span class="menu-title">统计分析</span></div>
+        <div class="menu-li"><span class="menu-title">专题图</span></div>
       </div>
     </div>
 
@@ -73,21 +81,55 @@
     width: 100%;
     height: 50px;
     color: #ffffff;
-    background-image: url('../images/top.png');
-    background-repeat:  repeat-x;
+    background:url('../images/top.png'),0 0 repeat, linear-gradient(to right, #6fb7ff, #e2414d);
     position: absolute;
     z-index: 100;
   }
+  .menu{
+    height: 100%;
+    vertical-align: top;
+    margin-left: 5.83333rem;
+    font-size: 1.04167rem;
+    color: #ade8ff;
+    font-weight: 500;
+    text-align: center;
+    letter-spacing: 2px;
+  }
   .menu-li{
-    position: relative;
+    float:left;
     height: 100%;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     display: inline-block;
     vertical-align: top;
     min-width: 4.6875rem;
-    margin-left: 4.6875rem;
+    margin-left: 80px;
     border-bottom: .20833rem solid transparent;
     cursor: pointer;
+    font-size: 1rem;
+    color: #ade8ff;
+    font-weight: 500;
+    text-align: center;
+    letter-spacing: 2px;
+    line-height: 3rem
+  }
+  .menu-title{
+    display: inline-block;
+    font-family: '微软雅黑', 'Avenir', Helvetica, Arial, sans-serif;
+    font-size:20px;
+  }
+  .drop-down-content{
+    padding: 0;
+    display: inline-block;
+  }
+  ul a{
+    display: block;
+    text-decoration: none;
+    width: 100px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    color: white;
+    background-color: rgba(7,21,58,70);
   }
 </style>
