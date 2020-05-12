@@ -113,17 +113,22 @@
     letter-spacing: 2px;
     line-height: 3rem
   }
+   .menu-li:hover  .drop-down-content{
+    display: block;
+  }
   .menu-title{
-    display: inline-block;
     font-family: '微软雅黑', 'Avenir', Helvetica, Arial, sans-serif;
     font-size:20px;
   }
   .drop-down-content{
     position:absolute;
-    margin-top: 56px;
-    left:24.89%;
+    margin-top: 0px;
+    left:24.60%;
     padding: 0;
-    display: inline-block;
+    display: none;
+  }
+  .drop-down-content li:hover a{
+    background-color:red;
   }
   ul{
     list-style: none;
