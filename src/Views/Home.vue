@@ -1,15 +1,20 @@
 <template>
   <div id="cesiumContainer" class="home">
     <div class="home-top">
+      <div class="log">
+        <div style="width: 160px;margin-top: 10px">
+          <img style="vertical-align: center" src="../../static/img/bus-logo.png">
+        </div>
+      </div>
       <div class="menu">
         <div class="menu-li"><span class="menu-title">数据展示</span></div>
         <div class="menu-li">
           <span class="menu-title">应用功能
           </span>
           <ul class="drop-down-content">
-            <li><a href="#">我是1</a></li>
-            <li><a href="#">我是2</a></li>
-            <li><a href="#">我是3</a></li>
+            <li><a >我是1</a></li>
+            <li><a >我是2</a></li>
+            <li><a >我是3</a></li>
           </ul>
         </div>
         <div class="menu-li"><span class="menu-title">统计分析</span></div>
@@ -76,6 +81,10 @@
   #cesiumContainer {
     width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
   }
+  .log{
+    width:10%;
+    margin-left: 5px;
+  }
   .home-top {
     background-size:100% 100%;
     width: 100%;
@@ -86,9 +95,10 @@
     z-index: 100;
   }
   .menu{
+    width: 90%;
     height: 100%;
-    vertical-align: top;
-    margin-left: 5.83333rem;
+    margin-top: -46px;
+    margin-left: 160px;
     font-size: 1.04167rem;
     color: #ade8ff;
     font-weight: 500;
@@ -102,7 +112,7 @@
     box-sizing: border-box;
     display: inline-block;
     vertical-align: top;
-    min-width: 4.6875rem;
+    min-width: 100px;
     margin-left: 80px;
     border-bottom: .20833rem solid transparent;
     cursor: pointer;
@@ -121,9 +131,7 @@
     font-size:20px;
   }
   .drop-down-content{
-    position:absolute;
-    margin-top: 0px;
-    left:24.60%;
+    margin-top: 0;
     padding: 0;
     display: none;
   }
