@@ -32,11 +32,14 @@
   export default {
     name: "home",
     data() {
-      return {};
+      return {
+        viewer:''
+      };
     },
     mounted () {
       this.$nextTick(()=>{
         this.initMap()
+        this.add3DTiles()
       })
 
     },
@@ -50,7 +53,7 @@
         var subdomains=['0','1','2','3','4','5','6','7'];
 
         // cesium 初始化
-        var viewer = new Cesium.Viewer('cesiumContainer', {
+        this.viewer = new Cesium.Viewer('cesiumContainer', {
           geocoder:false,
           homeButton:false,
           sceneModePicker:false,
@@ -63,13 +66,13 @@
           terrainProvider: Cesium.createWorldTerrain()
         });
         // 抗锯齿
-        viewer.scene.postProcessStages.fxaa.enabled=false;
+          this.viewer.scene.postProcessStages.fxaa.enabled=false;
         // 水雾特效
-        viewer.scene.globe.showGroundAtmosphere = true;
+          this.viewer.scene.globe.showGroundAtmosphere = true;
         // 设置最大俯仰角，[-90,0]区间内，默认为-30，单位弧度
-        viewer.scene.screenSpaceCameraController.constrainedPitch = Cesium.Math.toRadians(-20);
+          this.viewer.scene.screenSpaceCameraController.constrainedPitch = Cesium.Math.toRadians(-20);
         // 取消默认的双击事件
-        viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+          this.viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 
         // 叠加影像服务
         var imgMap = new Cesium.UrlTemplateImageryProvider({
@@ -78,7 +81,7 @@
           tilingScheme : new Cesium.WebMercatorTilingScheme(),
           maximumLevel : 18
         });
-        viewer.imageryLayers.addImageryProvider(imgMap);
+          this.viewer.imageryLayers.addImageryProvider(imgMap);
 
         // 叠加国界服务
         var iboMap = new Cesium.UrlTemplateImageryProvider({
@@ -87,7 +90,7 @@
           tilingScheme : new Cesium.WebMercatorTilingScheme(),
           maximumLevel : 10
         });
-        viewer.imageryLayers.addImageryProvider(iboMap);
+          this.viewer.imageryLayers.addImageryProvider(iboMap);
 
         // 叠加地形服务
         var terrainUrls = [];
@@ -101,14 +104,14 @@
           urls: terrainUrls
         });
 
-        viewer.terrainProvider = provider;
+          this.viewer.terrainProvider = provider;
 
         // 将三维球定位到中国
-        viewer.camera.flyTo({
-          destination: Cesium.Cartesian3.fromDegrees(117.2764, 31.868, 9000.0),
+        this.viewer.camera.flyTo({
+          destination: Cesium.Cartesian3.fromDegrees(117.2764, 31.868, 60),
           orientation: {
             heading :  Cesium.Math.toRadians(0),
-            pitch : Cesium.Math.toRadians(-90),
+            pitch : Cesium.Math.toRadians(0),
             roll : Cesium.Math.toRadians(0)
           },
           complete:function callback() {
@@ -118,7 +121,7 @@
 
         // 叠加三维地名服务
         var wtfs = new Cesium.GeoWTFS({
-          viewer,
+          viewer:this.viewer,
           //三维地名服务，使用wtfs服务
           subdomains:subdomains,
           metadata:{
@@ -176,7 +179,23 @@
         wtfs.initTDT([{"x":6,"y":1,"level":2,"boundBox":{"minX":90,"minY":0,"maxX":135,"maxY":45}},{"x":7,"y":1,"level":2,"boundBox":{"minX":135,"minY":0,"maxX":180,"maxY":45}},{"x":6,"y":0,"level":2,"boundBox":{"minX":90,"minY":45,"maxX":135,"maxY":90}},{"x":7,"y":0,"level":2,"boundBox":{"minX":135,"minY":45,"maxX":180,"maxY":90}},{"x":5,"y":1,"level":2,"boundBox":{"minX":45,"minY":0,"maxX":90,"maxY":45}},{"x":4,"y":1,"level":2,"boundBox":{"minX":0,"minY":0,"maxX":45,"maxY":45}},{"x":5,"y":0,"level":2,"boundBox":{"minX":45,"minY":45,"maxX":90,"maxY":90}},{"x":4,"y":0,"level":2,"boundBox":{"minX":0,"minY":45,"maxX":45,"maxY":90}},{"x":6,"y":2,"level":2,"boundBox":{"minX":90,"minY":-45,"maxX":135,"maxY":0}},{"x":6,"y":3,"level":2,"boundBox":{"minX":90,"minY":-90,"maxX":135,"maxY":-45}},{"x":7,"y":2,"level":2,"boundBox":{"minX":135,"minY":-45,"maxX":180,"maxY":0}},{"x":5,"y":2,"level":2,"boundBox":{"minX":45,"minY":-45,"maxX":90,"maxY":0}},{"x":4,"y":2,"level":2,"boundBox":{"minX":0,"minY":-45,"maxX":45,"maxY":0}},{"x":3,"y":1,"level":2,"boundBox":{"minX":-45,"minY":0,"maxX":0,"maxY":45}},{"x":3,"y":0,"level":2,"boundBox":{"minX":-45,"minY":45,"maxX":0,"maxY":90}},{"x":2,"y":0,"level":2,"boundBox":{"minX":-90,"minY":45,"maxX":-45,"maxY":90}},{"x":0,"y":1,"level":2,"boundBox":{"minX":-180,"minY":0,"maxX":-135,"maxY":45}},{"x":1,"y":0,"level":2,"boundBox":{"minX":-135,"minY":45,"maxX":-90,"maxY":90}},{"x":0,"y":0,"level":2,"boundBox":{"minX":-180,"minY":45,"maxX":-135,"maxY":90}}]);
       },
         add3DTiles(){
-
+          //Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0ZDgxYjkxMy05OWI2LTRkYTEtYjA4ZC1kN2Q4Yzc2NzM5M2QiLCJpZCI6MTI5MDAsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1NjIxMzc1NzF9.mU7f3eFJZxPtESiMyetyp4-4JlvB6l-euHELB5q0p_I'
+          //this.viewer = new Cesium.Viewer('cesiumContainer');//创建默认地图
+          var palaceTileset = new Cesium.Cesium3DTileset({
+            url: '/static/3DData/hn04/tilesnew/tileset.json'
+          })
+          this.viewer.scene.primitives.add(palaceTileset);
+          var longitude = 117.2764;
+          var latitude = 31.868;
+          var height = 60;
+          palaceTileset.readyPromise.then(function(argument) {
+            //经纬度、高转笛卡尔坐标
+            var position = Cesium.Cartesian3.fromDegrees(longitude, latitude, height);
+            var mat = Cesium.Transforms.eastNorthUpToFixedFrame(position);
+            var rotationX = Cesium.Matrix4.fromRotationTranslation(Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(0)));
+            Cesium.Matrix4.multiply(mat, rotationX, mat);
+            palaceTileset._root.transform = mat;
+          })
         }
     }
 
