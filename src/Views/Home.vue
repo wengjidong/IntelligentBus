@@ -39,7 +39,7 @@
     mounted () {
       this.$nextTick(()=>{
         this.initMap()
-        this.add3DTiles()
+        //this.add3DTiles()
       })
 
     },
@@ -187,8 +187,8 @@
           })*/
 
           var palaceTileset = new Cesium.Cesium3DTileset({
-            //url: 'static/3DData/hn04/tilesnew/tileset.json'
-            url: 'localhost'
+            url: 'static/3DData/hn04/tilesnew/tileset.json'
+            //url: 'localhost'
           })
           this.viewer.scene.primitives.add(palaceTileset);
           var longitude = 117.2764;
