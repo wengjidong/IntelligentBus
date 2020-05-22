@@ -8,5 +8,11 @@ export function getQuatoSetList(params) {
     params
   })
 }
-
+// 供应商管理
+export function tilesurl() {
+  return request({
+    url: 'http://192.168.1.179:8066/',
+    method: 'get',
+  })
+}
 
