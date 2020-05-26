@@ -33,18 +33,19 @@
     name: "home",
     data() {
       return {
-        viewer:''
+
       };
     },
     mounted () {
       this.$nextTick(()=>{
         this.initMap()
-        //this.add3DTiles()
+        this.add3DTiles()
       })
 
     },
     methods:{
         initMap(){
+          this.viewer={}
         Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0ZDgxYjkxMy05OWI2LTRkYTEtYjA4ZC1kN2Q4Yzc2NzM5M2QiLCJpZCI6MTI5MDAsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1NjIxMzc1NzF9.mU7f3eFJZxPtESiMyetyp4-4JlvB6l-euHELB5q0p_I'
         var token = '78767b9311e5c8382a1258a78604f618';
         // 服务域名
