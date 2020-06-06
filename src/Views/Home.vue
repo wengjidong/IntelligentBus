@@ -203,6 +203,16 @@
             Cesium.Matrix4.multiply(mat, rotationX, mat);
             palaceTileset._root.transform = mat;
           })
+        },
+        addModels(){
+          this.scene=this.viewer.scene;
+          var model = this.scene.primitives.add(
+            Cesium.Model.fromGltf({
+              url: url,
+              modelMatrix: modelMatrix,
+              minimumPixelSize: 128,
+            })
+          )
         }
     }
 
