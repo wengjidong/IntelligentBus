@@ -18,7 +18,7 @@
           </ul>
         </div>
         <div class="menu-li"><span class="menu-title">统计分析</span></div>
-        <div class="menu-li"><span class="menu-title">专题图</span></div>
+        <div class="menu-li"><span class="menu-title">专题图c</span></div>
       </div>
     </div>
 
@@ -40,6 +40,7 @@
       this.$nextTick(()=>{
         this.initMap()
         this.add3DTiles()
+        //this.addModels()
       })
 
     },
@@ -181,15 +182,10 @@
       },
         add3DTiles(){
           debugger
-          //Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0ZDgxYjkxMy05OWI2LTRkYTEtYjA4ZC1kN2Q4Yzc2NzM5M2QiLCJpZCI6MTI5MDAsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1NjIxMzc1NzF9.mU7f3eFJZxPtESiMyetyp4-4JlvB6l-euHELB5q0p_I'
-          //this.viewer = new Cesium.Viewer('cesiumContainer');//创建默认地图
-/*          tilesurl().then(response=>{
-
-          })*/
 
           var palaceTileset = new Cesium.Cesium3DTileset({
-            url: 'static/3DData/hn04/tilesnew/tileset.json'
-            //url: 'localhost'
+            //url: 'static/3DData/hn04/tilesnew/tileset.json'
+            url: 'static/1/tileset.json'
           })
           this.viewer.scene.primitives.add(palaceTileset);
           var longitude = 117.2764;
@@ -205,11 +201,23 @@
           })
         },
         addModels(){
+          // 小车旋转角度
+          let radian = Cesium.Math.toRadians(3.0);
+          // 小车的速度
+          let speed = 60;
+          // 速度矢量
+          let speedVector = new Cesium.Cartesian3();
+          // 起始位置
+          let position = Cesium.Cartesian3.fromDegrees(117.2764,31.868,0);
+          debugger
+          // 用于设置小车方向
+          let hpRoll = new Cesium.HeadingPitchRoll();
+          let fixedFrameTransforms =  Cesium.Transforms.localFrameToFixedFrameGenerator('north', 'west');
           this.scene=this.viewer.scene;
           var model = this.scene.primitives.add(
             Cesium.Model.fromGltf({
-              url: url,
-              modelMatrix: modelMatrix,
+              url: 'static/CesiumMilkTruck.glb',
+              modelMatrix: Cesium.Transforms.headingPitchRollToFixedFrame(position, hpRoll, Cesium.Ellipsoid.WGS84, fixedFrameTransforms),
               minimumPixelSize: 128,
             })
           )
