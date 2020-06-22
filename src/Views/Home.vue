@@ -33,7 +33,8 @@
     name: "home",
     data() {
       return {
-
+        carPrimitive:'',
+        index:0
       };
     },
     mounted () {
@@ -41,6 +42,7 @@
         this.initMap()
         this.add3DTiles()
         //this.addModels()
+        //this.ttCar()
       })
 
     },
@@ -113,9 +115,10 @@
           destination: Cesium.Cartesian3.fromDegrees(117.2764, 31.868, 60),
           orientation: {
             heading :  Cesium.Math.toRadians(0),
-            pitch : Cesium.Math.toRadians(0),
+            pitch : Cesium.Math.toRadians(-90),
             roll : Cesium.Math.toRadians(0)
           },
+          duration:15,
           complete:function callback() {
             // 定位完成之后的回调函数
           }
@@ -181,24 +184,26 @@
         wtfs.initTDT([{"x":6,"y":1,"level":2,"boundBox":{"minX":90,"minY":0,"maxX":135,"maxY":45}},{"x":7,"y":1,"level":2,"boundBox":{"minX":135,"minY":0,"maxX":180,"maxY":45}},{"x":6,"y":0,"level":2,"boundBox":{"minX":90,"minY":45,"maxX":135,"maxY":90}},{"x":7,"y":0,"level":2,"boundBox":{"minX":135,"minY":45,"maxX":180,"maxY":90}},{"x":5,"y":1,"level":2,"boundBox":{"minX":45,"minY":0,"maxX":90,"maxY":45}},{"x":4,"y":1,"level":2,"boundBox":{"minX":0,"minY":0,"maxX":45,"maxY":45}},{"x":5,"y":0,"level":2,"boundBox":{"minX":45,"minY":45,"maxX":90,"maxY":90}},{"x":4,"y":0,"level":2,"boundBox":{"minX":0,"minY":45,"maxX":45,"maxY":90}},{"x":6,"y":2,"level":2,"boundBox":{"minX":90,"minY":-45,"maxX":135,"maxY":0}},{"x":6,"y":3,"level":2,"boundBox":{"minX":90,"minY":-90,"maxX":135,"maxY":-45}},{"x":7,"y":2,"level":2,"boundBox":{"minX":135,"minY":-45,"maxX":180,"maxY":0}},{"x":5,"y":2,"level":2,"boundBox":{"minX":45,"minY":-45,"maxX":90,"maxY":0}},{"x":4,"y":2,"level":2,"boundBox":{"minX":0,"minY":-45,"maxX":45,"maxY":0}},{"x":3,"y":1,"level":2,"boundBox":{"minX":-45,"minY":0,"maxX":0,"maxY":45}},{"x":3,"y":0,"level":2,"boundBox":{"minX":-45,"minY":45,"maxX":0,"maxY":90}},{"x":2,"y":0,"level":2,"boundBox":{"minX":-90,"minY":45,"maxX":-45,"maxY":90}},{"x":0,"y":1,"level":2,"boundBox":{"minX":-180,"minY":0,"maxX":-135,"maxY":45}},{"x":1,"y":0,"level":2,"boundBox":{"minX":-135,"minY":45,"maxX":-90,"maxY":90}},{"x":0,"y":0,"level":2,"boundBox":{"minX":-180,"minY":45,"maxX":-135,"maxY":90}}]);
       },
         add3DTiles(){
-          debugger
-
           var palaceTileset = new Cesium.Cesium3DTileset({
             //url: 'static/3DData/hn04/tilesnew/tileset.json'
-            url: 'static/1/tileset.json'
+             url: 'static/3DData/bus/tileset.json',
+            maximumScreenSpaceError: 2,
+            maximumNumberOfLoadedTiles: 1000
           })
           this.viewer.scene.primitives.add(palaceTileset);
           var longitude = 117.2764;
           var latitude = 31.868;
-          var height = 60;
+          var height = 0;
+          // //缩放
+
           palaceTileset.readyPromise.then(function(argument) {
             //经纬度、高转笛卡尔坐标
             var position = Cesium.Cartesian3.fromDegrees(longitude, latitude, height);
             var mat = Cesium.Transforms.eastNorthUpToFixedFrame(position);
-            var rotationX = Cesium.Matrix4.fromRotationTranslation(Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(0)));
-            Cesium.Matrix4.multiply(mat, rotationX, mat);
             palaceTileset._root.transform = mat;
+            this.viewer.zoomTo(palaceTileset, new Cesium.HeadingPitchRange(0.5, -0.2, palaceTileset.boundingSphere.radius * 1.0));
           })
+
         },
         addModels(){
           // 小车旋转角度
@@ -209,19 +214,39 @@
           let speedVector = new Cesium.Cartesian3();
           // 起始位置
           let position = Cesium.Cartesian3.fromDegrees(117.2764,31.868,0);
-          debugger
           // 用于设置小车方向
           let hpRoll = new Cesium.HeadingPitchRoll();
           let fixedFrameTransforms =  Cesium.Transforms.localFrameToFixedFrameGenerator('north', 'west');
           this.scene=this.viewer.scene;
-          var model = this.scene.primitives.add(
+          this.carPrimitive = this.scene.primitives.add(
             Cesium.Model.fromGltf({
               url: 'static/CesiumMilkTruck.glb',
               modelMatrix: Cesium.Transforms.headingPitchRollToFixedFrame(position, hpRoll, Cesium.Ellipsoid.WGS84, fixedFrameTransforms),
               minimumPixelSize: 128,
             })
           )
-        }
+        },
+        ttCar(){
+          setTimeout(()=>{
+            this.index++;
+            this.moveCar(this.index);
+          },1000)
+        },
+      // 移动小车
+        moveCar(index) {
+          let speedVector = new Cesium.Cartesian3();
+          var speed=60;
+          let position = Cesium.Cartesian3.fromDegrees(117.2764+index,31.868,0);
+          let hpRoll = new Cesium.HeadingPitchRoll();
+          let fixedFrameTransforms =  Cesium.Transforms.localFrameToFixedFrameGenerator('north', 'west');
+           // 计算速度矩阵
+          speedVector = Cesium.Cartesian3.multiplyByScalar(Cesium.Cartesian3.UNIT_X,speed,speedVector);
+          // 根据速度计算出下一个位置的坐标
+          position = Cesium.Matrix4.multiplyByPoint(this.carPrimitive.modelMatrix ,speedVector, position);
+          // 小车移动
+          Cesium.Transforms.headingPitchRollToFixedFrame(position, hpRoll, Cesium.Ellipsoid.WGS84, fixedFrameTransforms, this.carPrimitive.modelMatrix);
+          this.ttCar();
+       }
     }
 
   };
