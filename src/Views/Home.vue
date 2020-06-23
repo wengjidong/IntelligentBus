@@ -193,15 +193,23 @@
           this.viewer.scene.primitives.add(palaceTileset);
           var longitude = 117.2764;
           var latitude = 31.868;
-          var height = 0;
+          var height = 20;
           // //缩放
-
-          palaceTileset.readyPromise.then(function(argument) {
+          let params = {
+            tx: 117.2764, //模型中心X轴坐标（经度，单位：十进制度）
+            ty: 31.868, //模型中心Y轴坐标（纬度，单位：十进制度）
+            tz: 20, //模型中心Z轴坐标（高程，单位：米）
+            rx: 0, //X轴（经度）方向旋转角度（单位：度）
+            ry: 0, //Y轴（纬度）方向旋转角度（单位：度）
+            rz: -1 //Z轴（高程）方向旋转角度（单位：度）
+          };
+          var that=this;
+          palaceTileset.readyPromise.then(function(tileset) {
             //经纬度、高转笛卡尔坐标
             var position = Cesium.Cartesian3.fromDegrees(longitude, latitude, height);
             var mat = Cesium.Transforms.eastNorthUpToFixedFrame(position);
-            palaceTileset._root.transform = mat;
-            this.viewer.zoomTo(palaceTileset, new Cesium.HeadingPitchRange(0.5, -0.2, palaceTileset.boundingSphere.radius * 1.0));
+            palaceTileset._root.transform =that.update3dtilesMaxtrix(params);
+            // Position tileset
           })
 
         },
@@ -225,6 +233,28 @@
               minimumPixelSize: 128,
             })
           )
+        },
+        update3dtilesMaxtrix(params){
+          debugger
+          let mx = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(params.rx));
+          let my = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(params.ry));
+          let mz = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(params.rz));
+          let rotationX = Cesium.Matrix4.fromRotationTranslation(mx);
+          let rotationY = Cesium.Matrix4.fromRotationTranslation(my);
+          let rotationZ = Cesium.Matrix4.fromRotationTranslation(mz);
+          //平移
+          let position = Cesium.Cartesian3.fromDegrees(params.tx, params.ty, params.tz);
+          let m = Cesium.Transforms.eastNorthUpToFixedFrame(position);
+
+          let scale = Cesium.Matrix4.fromUniformScale(100);
+          // //缩放
+          Cesium.Matrix4.multiply(m, scale, m);
+          //旋转、平移矩阵相乘
+          Cesium.Matrix4.multiply(m, rotationX, m);
+          Cesium.Matrix4.multiply(m, rotationY, m);
+          Cesium.Matrix4.multiply(m, rotationZ, m);
+          //赋值给tileset
+          return m;
         },
         ttCar(){
           setTimeout(()=>{
