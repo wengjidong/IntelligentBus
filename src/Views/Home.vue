@@ -1,27 +1,15 @@
 <template>
   <div id="cesiumContainer" class="home">
     <div class="home-top">
-      <div class="log">
-        <div style="width: 160px;margin-top: 10px">
-          <img style="vertical-align: center" src="../../static/img/bus-logo.png">
-        </div>
-      </div>
-      <div class="menu">
-        <div class="menu-li"><span class="menu-title">数据展示</span></div>
-        <div class="menu-li">
-          <span class="menu-title">应用功能
-          </span>
-          <ul class="drop-down-content">
-            <li><a >我是1</a></li>
-            <li><a >我是2</a></li>
-            <li><a >我是3</a></li>
-          </ul>
-        </div>
-        <div class="menu-li"><span class="menu-title">统计分析</span></div>
-        <div class="menu-li"><span class="menu-title">专题图c</span></div>
+      <div class="user-title">{{title}}</div>
+      <div class="top-right">
+        <div class="now-data">{{nowTime}}</div>
+        <weather-model></weather-model>
+        <div :class="['iconfont', 'full-icon', isFullScreen?'icon-tuichuquanping':'icon-quanping']"
+             @click="handleFullScreen"></div>
+<!--        <div class="iconfont yuan-icon icon-yuan" v-if="otherFeature.plan" @click="initPlanDialog(null, null, null)"></div>-->
       </div>
     </div>
-
   </div>
 </template>
 
@@ -29,18 +17,23 @@
   // 导出组件
   import { getQuatoSetList,tilesurl} from '@/api/basic'
   import 'cesium/Widgets/widgets.css'
+  import moment from 'moment'//
   export default {
     name: "home",
     data() {
       return {
         carPrimitive:'',
-        index:0
+        index:0,
+        title:'公交监管平台二三维一体化',
+        nowTime:'',
+        isFullScreen:false
       };
     },
     mounted () {
+      this.getNowTime()
       this.$nextTick(()=>{
-        this.initMap()
-        this.add3DTiles()
+/*        this.initMap()
+        this.add3DTiles()*/
         //this.addModels()
         //this.ttCar()
       })
@@ -263,7 +256,7 @@
           },1000)
         },
       // 移动小车
-        moveCar(index) {
+      moveCar(index) {
           let speedVector = new Cesium.Cartesian3();
           var speed=60;
           let position = Cesium.Cartesian3.fromDegrees(117.2764+index,31.868,0);
@@ -276,7 +269,14 @@
           // 小车移动
           Cesium.Transforms.headingPitchRollToFixedFrame(position, hpRoll, Cesium.Ellipsoid.WGS84, fixedFrameTransforms, this.carPrimitive.modelMatrix);
           this.ttCar();
-       }
+       },
+      handleFullScreen(){
+
+      },
+      getNowTime(){
+        this.nowTime = moment().format("YYYY年MM月DD日  ")+ "星期" + "日一二三四五六".charAt(new Date().getDay())
+          + (moment().format("a") == "am"?"  上午":"  下午")+ moment().format("HH:mm")
+      },
     }
 
   };
@@ -286,6 +286,7 @@
   .home {
     width: 100%;
     height: 100vh;
+    position:relative;
   }
   #cesiumContainer {
     width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
@@ -297,9 +298,8 @@
   .home-top {
     background-size:100% 100%;
     width: 100%;
-    height: 50px;
-    color: #ffffff;
-    background:url('../images/top.png'),0 0 repeat, linear-gradient(to right, #6fb7ff, #e2414d);
+    height: 100px;
+    background-image:url('../images/top-bg.png');
     position: absolute;
     z-index: 100;
   }
@@ -359,5 +359,45 @@
     line-height: 50px;
     color: white;
     background-color: rgba(7,21,58,70);
+  }
+  .user-title{
+    text-align: center;
+    font-size: 42px;
+    margin-top: 25px;
+    color: #fff;
+    line-height: 58px;
+    text-shadow:2px 2px 0px rgba(8,25,75,1)
+  }
+  .top-right{
+    position: absolute;
+    width: 30%;
+    height: 38px;
+    line-height: 38px;
+    top: 10px;
+    right: 60px;
+  .now-data{
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 300;
+    color: #fff;
+    margin-right: 20px;
+    float: left;
+    white-space: pre;
+  }
+  .full-icon{
+    cursor: pointer;
+    display: inline-block;
+    float: right;
+    font-size: 24px;
+    color: #B8BFD0;
+    margin-left: 15px;
+  }
+  .yuan-icon{
+    cursor: pointer;
+    display: inline-block;
+    float: right;
+    font-size: 24px;
+    color: #FFA338;
+  }
   }
 </style>
