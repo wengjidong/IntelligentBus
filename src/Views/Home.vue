@@ -17,9 +17,13 @@
   // 导出组件
   import { getQuatoSetList,tilesurl} from '@/api/basic'
   import 'cesium/Widgets/widgets.css'
-  import moment from 'moment'//
+  import WeatherModel from "@/components/weatherModel";
+  import moment from 'moment'
   export default {
     name: "home",
+    components:{
+      WeatherModel
+    },
     data() {
       return {
         carPrimitive:'',
@@ -30,10 +34,15 @@
       };
     },
     mounted () {
-      this.getNowTime()
+      /**
+       * 每一秒刷新时间
+       */
+      window.setInterval(() => {
+        this.getNowTime();
+      }, 1000);
       this.$nextTick(()=>{
-/*        this.initMap()
-        this.add3DTiles()*/
+        this.initMap()
+        this.add3DTiles()
         //this.addModels()
         //this.ttCar()
       })
@@ -273,9 +282,15 @@
       handleFullScreen(){
 
       },
+      /**
+       * 获取当前时间
+       */
       getNowTime(){
         this.nowTime = moment().format("YYYY年MM月DD日  ")+ "星期" + "日一二三四五六".charAt(new Date().getDay())
           + (moment().format("a") == "am"?"  上午":"  下午")+ moment().format("HH:mm")
+      },
+      handleFullScreen(){
+
       },
     }
 
@@ -362,19 +377,20 @@
   }
   .user-title{
     text-align: center;
-    font-size: 42px;
+    font-size: 30px;
     margin-top: 25px;
     color: #fff;
     line-height: 58px;
     text-shadow:2px 2px 0px rgba(8,25,75,1)
   }
-  .top-right{
+  .top-right {
     position: absolute;
     width: 30%;
     height: 38px;
     line-height: 38px;
     top: 10px;
     right: 60px;
+  }
   .now-data{
     display: inline-block;
     font-size: 16px;
@@ -398,6 +414,5 @@
     float: right;
     font-size: 24px;
     color: #FFA338;
-  }
   }
 </style>

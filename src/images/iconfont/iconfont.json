@@ -1,0 +1,268 @@
+{
+  "id": "1703864",
+  "name": "一体化监管系统",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "14135716",
+      "name": "收起",
+      "font_class": "shouqi",
+      "unicode": "e6ab",
+      "unicode_decimal": 59051
+    },
+    {
+      "icon_id": "14135680",
+      "name": "电子站牌",
+      "font_class": "dianzizhanpai",
+      "unicode": "e6aa",
+      "unicode_decimal": 59050
+    },
+    {
+      "icon_id": "13805459",
+      "name": "视频",
+      "font_class": "shipin",
+      "unicode": "e6a9",
+      "unicode_decimal": 59049
+    },
+    {
+      "icon_id": "13786003",
+      "name": "停车场",
+      "font_class": "tingchechang1",
+      "unicode": "e6a8",
+      "unicode_decimal": 59048
+    },
+    {
+      "icon_id": "13650402",
+      "name": "信号",
+      "font_class": "xinhao",
+      "unicode": "e6a6",
+      "unicode_decimal": 59046
+    },
+    {
+      "icon_id": "13650403",
+      "name": "定位",
+      "font_class": "dingwei",
+      "unicode": "e6a78",
+      "unicode_decimal": 944760
+    },
+    {
+      "icon_id": "13649427",
+      "name": "停车场",
+      "font_class": "tingchechang",
+      "unicode": "e6a4",
+      "unicode_decimal": 59044
+    },
+    {
+      "icon_id": "13649107",
+      "name": "车辆编号",
+      "font_class": "cheliangbianhao",
+      "unicode": "e69c",
+      "unicode_decimal": 59036
+    },
+    {
+      "icon_id": "13649108",
+      "name": "车牌号",
+      "font_class": "chepaihao",
+      "unicode": "e69d",
+      "unicode_decimal": 59037
+    },
+    {
+      "icon_id": "13649156",
+      "name": "是否显示模块",
+      "font_class": "shifouxianshimokuai",
+      "unicode": "e69e",
+      "unicode_decimal": 59038
+    },
+    {
+      "icon_id": "13649157",
+      "name": "全屏",
+      "font_class": "quanping",
+      "unicode": "e69f",
+      "unicode_decimal": 59039
+    },
+    {
+      "icon_id": "13649158",
+      "name": "站点名称",
+      "font_class": "zhandianmingcheng",
+      "unicode": "e6a0",
+      "unicode_decimal": 59040
+    },
+    {
+      "icon_id": "13649159",
+      "name": "预案",
+      "font_class": "yuan",
+      "unicode": "e6a1",
+      "unicode_decimal": 59041
+    },
+    {
+      "icon_id": "13649160",
+      "name": "退出全屏",
+      "font_class": "tuichuquanping",
+      "unicode": "e6a2",
+      "unicode_decimal": 59042
+    },
+    {
+      "icon_id": "13649161",
+      "name": "围栏",
+      "font_class": "weilan",
+      "unicode": "e6a3",
+      "unicode_decimal": 59043
+    },
+    {
+      "icon_id": "13649163",
+      "name": "online-bus",
+      "font_class": "online-bus",
+      "unicode": "e6a5",
+      "unicode_decimal": 59045
+    },
+    {
+      "icon_id": "9101194",
+      "name": "收起2",
+      "font_class": "shouqi1",
+      "unicode": "e64c",
+      "unicode_decimal": 58956
+    },
+    {
+      "icon_id": "2008045",
+      "name": "菜单",
+      "font_class": "menuUp",
+      "unicode": "e6f3",
+      "unicode_decimal": 59123
+    },
+    {
+      "icon_id": "7847145",
+      "name": "控制台",
+      "font_class": "console",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "7847146",
+      "name": "智能调度",
+      "font_class": "ibds-un",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "7847180",
+      "name": "video",
+      "font_class": "video",
+      "unicode": "e615",
+      "unicode_decimal": 58901
+    },
+    {
+      "icon_id": "10085198",
+      "name": "主动安全",
+      "font_class": "security",
+      "unicode": "e66c",
+      "unicode_decimal": 58988
+    },
+    {
+      "icon_id": "10590237",
+      "name": "移动APP管理",
+      "font_class": "app",
+      "unicode": "e676",
+      "unicode_decimal": 58998
+    },
+    {
+      "icon_id": "13004763",
+      "name": "智能调度",
+      "font_class": "ibds-old",
+      "unicode": "e683",
+      "unicode_decimal": 59011
+    },
+    {
+      "icon_id": "13004765",
+      "name": "home",
+      "font_class": "home",
+      "unicode": "e685",
+      "unicode_decimal": 59013
+    },
+    {
+      "icon_id": "13004894",
+      "name": "资源管理-1",
+      "font_class": "ziyuanguanli-un",
+      "unicode": "e686",
+      "unicode_decimal": 59014
+    },
+    {
+      "icon_id": "13004895",
+      "name": "资源管理",
+      "font_class": "ziyuanguanli",
+      "unicode": "e688",
+      "unicode_decimal": 59016
+    },
+    {
+      "icon_id": "13005093",
+      "name": "home",
+      "font_class": "home-un",
+      "unicode": "e689",
+      "unicode_decimal": 59017
+    },
+    {
+      "icon_id": "13005166",
+      "name": "lanch-b",
+      "font_class": "console-un",
+      "unicode": "e68a",
+      "unicode_decimal": 59018
+    },
+    {
+      "icon_id": "13015965",
+      "name": "主动安全",
+      "font_class": "security-un",
+      "unicode": "e68c",
+      "unicode_decimal": 59020
+    },
+    {
+      "icon_id": "13015987",
+      "name": "视频监控",
+      "font_class": "video-un",
+      "unicode": "e68d",
+      "unicode_decimal": 59021
+    },
+    {
+      "icon_id": "13066625",
+      "name": "智能调度",
+      "font_class": "ibds",
+      "unicode": "e6f4",
+      "unicode_decimal": 59124
+    },
+    {
+      "icon_id": "13152543",
+      "name": "移动APP管理",
+      "font_class": "app-un",
+      "unicode": "e6f5",
+      "unicode_decimal": 59125
+    },
+    {
+      "icon_id": "13284079",
+      "name": "report-hover",
+      "font_class": "report",
+      "unicode": "e68e",
+      "unicode_decimal": 59022
+    },
+    {
+      "icon_id": "13284080",
+      "name": "report",
+      "font_class": "report-un",
+      "unicode": "e68f",
+      "unicode_decimal": 59023
+    },
+    {
+      "icon_id": "13601365",
+      "name": "监管-active",
+      "font_class": "oneview",
+      "unicode": "e69a",
+      "unicode_decimal": 59034
+    },
+    {
+      "icon_id": "13601366",
+      "name": "监管",
+      "font_class": "oneview-un",
+      "unicode": "e69b",
+      "unicode_decimal": 59035
+    }
+  ]
+}
