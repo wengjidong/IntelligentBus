@@ -41,7 +41,7 @@
         this.getNowTime();
       }, 1000);
       this.$nextTick(()=>{
-        this.initMap()
+        this.initEsriMap()
         this.add3DTiles()
         //this.addModels()
         //this.ttCar()
@@ -185,15 +185,75 @@
 
         wtfs.initTDT([{"x":6,"y":1,"level":2,"boundBox":{"minX":90,"minY":0,"maxX":135,"maxY":45}},{"x":7,"y":1,"level":2,"boundBox":{"minX":135,"minY":0,"maxX":180,"maxY":45}},{"x":6,"y":0,"level":2,"boundBox":{"minX":90,"minY":45,"maxX":135,"maxY":90}},{"x":7,"y":0,"level":2,"boundBox":{"minX":135,"minY":45,"maxX":180,"maxY":90}},{"x":5,"y":1,"level":2,"boundBox":{"minX":45,"minY":0,"maxX":90,"maxY":45}},{"x":4,"y":1,"level":2,"boundBox":{"minX":0,"minY":0,"maxX":45,"maxY":45}},{"x":5,"y":0,"level":2,"boundBox":{"minX":45,"minY":45,"maxX":90,"maxY":90}},{"x":4,"y":0,"level":2,"boundBox":{"minX":0,"minY":45,"maxX":45,"maxY":90}},{"x":6,"y":2,"level":2,"boundBox":{"minX":90,"minY":-45,"maxX":135,"maxY":0}},{"x":6,"y":3,"level":2,"boundBox":{"minX":90,"minY":-90,"maxX":135,"maxY":-45}},{"x":7,"y":2,"level":2,"boundBox":{"minX":135,"minY":-45,"maxX":180,"maxY":0}},{"x":5,"y":2,"level":2,"boundBox":{"minX":45,"minY":-45,"maxX":90,"maxY":0}},{"x":4,"y":2,"level":2,"boundBox":{"minX":0,"minY":-45,"maxX":45,"maxY":0}},{"x":3,"y":1,"level":2,"boundBox":{"minX":-45,"minY":0,"maxX":0,"maxY":45}},{"x":3,"y":0,"level":2,"boundBox":{"minX":-45,"minY":45,"maxX":0,"maxY":90}},{"x":2,"y":0,"level":2,"boundBox":{"minX":-90,"minY":45,"maxX":-45,"maxY":90}},{"x":0,"y":1,"level":2,"boundBox":{"minX":-180,"minY":0,"maxX":-135,"maxY":45}},{"x":1,"y":0,"level":2,"boundBox":{"minX":-135,"minY":45,"maxX":-90,"maxY":90}},{"x":0,"y":0,"level":2,"boundBox":{"minX":-180,"minY":45,"maxX":-135,"maxY":90}}]);
       },
+        initEsriMap(){
+          this.viewer={};
+          // cesium 初始化
+          Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0ZDgxYjkxMy05OWI2LTRkYTEtYjA4ZC1kN2Q4Yzc2NzM5M2QiLCJpZCI6MTI5MDAsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1NjIxMzc1NzF9.mU7f3eFJZxPtESiMyetyp4-4JlvB6l-euHELB5q0p_I'
+          this.viewer = new Cesium.Viewer('cesiumContainer', {
+            geocoder:false,
+            homeButton:false,
+            sceneModePicker:false,
+            navigationHelpButton:false,
+            animation:false,
+            timeline:false,
+            baseLayerPicker:false,
+            fullscreenButton:false,
+            vrButton:false,
+            terrainProvider: Cesium.createWorldTerrain(),
+            imageryProvider : new Cesium.ArcGisMapServerImageryProvider({
+              url:'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
+              //url: "http://cache1.arcgisonline.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer",
+            })
+          });
+          // 将三维球定位到中国
+          this.viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(117.2764, 31.868, 500),
+            orientation: {
+              heading :  Cesium.Math.toRadians(0),
+              pitch : Cesium.Math.toRadians(-90),
+              roll : Cesium.Math.toRadians(0)
+            },
+            duration:15,
+            complete:function callback() {
+              // 定位完成之后的回调函数
+            }
+          });
+        },
+        initMapBox(){
+          this.viewer={}
+          Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0ZDgxYjkxMy05OWI2LTRkYTEtYjA4ZC1kN2Q4Yzc2NzM5M2QiLCJpZCI6MTI5MDAsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1NjIxMzc1NzF9.mU7f3eFJZxPtESiMyetyp4-4JlvB6l-euHELB5q0p_I'
+          // cesium 初始化
+          this.viewer = new Cesium.Viewer('cesiumContainer', {
+            geocoder:false,
+            homeButton:false,
+            sceneModePicker:false,
+            navigationHelpButton:false,
+            animation:false,
+            timeline:false,
+            baseLayerPicker:false,
+            fullscreenButton:false,
+            vrButton:false
+          });
+          /*var layer=new Cesium.MapboxImageryProvider({
+            mapId: 'mapbox.dark',
+            accessToken: 'pk.eyJ1Ijoid2VuZ2ppZG9uZyIsImEiOiJja2MwbWdvOHYxMnV2MzVwajE1dXFmcjJiIn0.nduvqlJMlrazxo5KsmKUfw'
+          })*/
+          var layer=new Cesium.MapboxStyleImageryProvider({
+            url:'mapbox://styles/mapbox/dark-v10',
+            accessToken: 'pk.eyJ1IjoiZGVuZ3plbmdqaWFuIiwiYSI6ImNqbGhnbWo1ZjFpOHEzd3V2Ynk1OG5vZHgifQ.16zy39I-tbQv3K6UnRk8Cw',
+            scaleFactor:true
+          });
+          this.viewer.imageryLayers.addImageryProvider(layer)
+        },
         add3DTiles(){
           var palaceTileset = new Cesium.Cesium3DTileset({
-            //url: 'static/3DData/hn04/tilesnew/tileset.json'
-             url: 'static/3DData/bus/tileset.json',
+            //url: 'static/3DData/hn04/tilesnew/tileset.json',
+             url: 'http://localhost:9000/model/352bc1a0bad211ea8587391933836df9/tileset.json',
             maximumScreenSpaceError: 2,
             maximumNumberOfLoadedTiles: 1000
           })
           this.viewer.scene.primitives.add(palaceTileset);
-          var longitude = 117.2764;
+/*          var longitude = 117.2764;
           var latitude = 31.868;
           var height = 20;
           // //缩放
@@ -212,7 +272,7 @@
             var mat = Cesium.Transforms.eastNorthUpToFixedFrame(position);
             palaceTileset._root.transform =that.update3dtilesMaxtrix(params);
             // Position tileset
-          })
+          })*/
 
         },
         addModels(){
