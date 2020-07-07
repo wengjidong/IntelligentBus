@@ -200,9 +200,9 @@
             fullscreenButton:false,
             vrButton:false,
             terrainProvider: Cesium.createWorldTerrain(),
-            imageryProvider : new Cesium.ArcGisMapServerImageryProvider({
-              url:'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
-              //url: "http://cache1.arcgisonline.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer",
+            imageryProvider : new Cesium.UrlTemplateImageryProvider({
+              //url:'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
+                    url : 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
             })
           });
           // 将三维球定位到中国
@@ -239,16 +239,17 @@
             accessToken: 'pk.eyJ1Ijoid2VuZ2ppZG9uZyIsImEiOiJja2MwbWdvOHYxMnV2MzVwajE1dXFmcjJiIn0.nduvqlJMlrazxo5KsmKUfw'
           })*/
           var layer=new Cesium.MapboxStyleImageryProvider({
-            url:'mapbox://styles/mapbox/dark-v10',
-            accessToken: 'pk.eyJ1IjoiZGVuZ3plbmdqaWFuIiwiYSI6ImNqbGhnbWo1ZjFpOHEzd3V2Ynk1OG5vZHgifQ.16zy39I-tbQv3K6UnRk8Cw',
+            //url:'mapbox://styles/mapbox/streets-v11',
+            mapId: 'mapbox.dark',
+            accessToken: 'pk.eyJ1Ijoid2VuZ2ppZG9uZyIsImEiOiJja2MwbWdvOHYxMnV2MzVwajE1dXFmcjJiIn0.nduvqlJMlrazxo5KsmKUfw',
             scaleFactor:true
           });
           this.viewer.imageryLayers.addImageryProvider(layer)
         },
         add3DTiles(){
           var palaceTileset = new Cesium.Cesium3DTileset({
-            //url: 'static/3DData/hn04/tilesnew/tileset.json',
-             url: 'http://localhost:9000/model/352bc1a0bad211ea8587391933836df9/tileset.json',
+            url: 'http://localhost:9000/model/17f5a2b0bff811ea816f5d4af717f9b9/tileset.json',
+             //url: 'http://localhost:9000/model/352bc1a0bad211ea8587391933836df9/tileset.json',
             maximumScreenSpaceError: 2,
             maximumNumberOfLoadedTiles: 1000
           })
