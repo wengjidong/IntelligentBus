@@ -10,6 +10,23 @@
 <!--        <div class="iconfont yuan-icon icon-yuan" v-if="otherFeature.plan" @click="initPlanDialog(null, null, null)"></div>-->
       </div>
     </div>
+    <div class="control-bottom">
+      <el-tooltip content="车辆" placement="top" effect="light">
+        <div class="showVehi-btn"></div>
+      </el-tooltip>
+      <el-tooltip content="线路" placement="top" effect="light">
+        <div class="showLine-btn"></div>
+      </el-tooltip>
+      <el-tooltip content="站点" placement="top" effect="light">
+        <div class="showSta-btn"></div>
+      </el-tooltip>
+      <el-tooltip content="停车场" placement="top" effect="light">
+        <div class="showPar-btn"></div>
+      </el-tooltip>
+      <el-tooltip  content="电子站牌" placement="top" effect="light">
+        <div class="showElec-btn"></div>
+      </el-tooltip>
+    </div>
   </div>
 </template>
 
@@ -188,6 +205,7 @@
         initEsriMap(){
           this.viewer={};
           // cesium 初始化
+          debugger
           Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0ZDgxYjkxMy05OWI2LTRkYTEtYjA4ZC1kN2Q4Yzc2NzM5M2QiLCJpZCI6MTI5MDAsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1NjIxMzc1NzF9.mU7f3eFJZxPtESiMyetyp4-4JlvB6l-euHELB5q0p_I'
           this.viewer = new Cesium.Viewer('cesiumContainer', {
             geocoder:false,
@@ -201,11 +219,12 @@
             vrButton:false,
             terrainProvider: Cesium.createWorldTerrain(),
             imageryProvider : new Cesium.UrlTemplateImageryProvider({
-              //url:'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
-                    url : 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+              //url:'http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}'
+              url : 'https://c.tiles.mapbox.com/v4/mapbox.comic/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYW5hbHl0aWNhbGdyYXBoaWNzIiwiYSI6ImNpd204Zm4wejAwNzYyeW5uNjYyZmFwdWEifQ.7i-VIZZWX8pd1bTfxIVj9g',
             })
           });
-          // 将三维球定位到中国
+          this.viewer._cesiumWidget._creditContainer.style.display = "none"
+          // 将三维球定位到中国s
           this.viewer.camera.flyTo({
             destination: Cesium.Cartesian3.fromDegrees(117.2764, 31.868, 500),
             orientation: {
@@ -245,6 +264,15 @@
             scaleFactor:true
           });
           this.viewer.imageryLayers.addImageryProvider(layer)
+        },
+        initBaiduMap(){
+          var earth = new XE.Earth('cesiumContainer');
+          var viewer = earth.czm.viewer;
+          viewer.imageryLayers.addImageryProvider(new Cesium.UrlTemplateImageryProvider({
+            url: 'http://api0.map.bdimg.com/customimage/tile?=&x={x}&y={y}&z={z}&scale=1&customid=midnight',
+            //minimumLevel:0,
+            //maximumLevel:undefined
+          }));
         },
         add3DTiles(){
           var palaceTileset = new Cesium.Cesium3DTileset({
@@ -358,7 +386,7 @@
   };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
   .home {
     width: 100%;
     height: 100vh;
@@ -475,5 +503,61 @@
     float: right;
     font-size: 24px;
     color: #FFA338;
+  }
+  .control-bottom{
+    z-index: 999;
+    position: absolute;
+    width:412px;
+    height:77px;
+    left: 50%;
+    bottom: 10px;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    background-image: url("../images/bottom-control.png");
+    .btn-item{
+      width: 58px;
+      height: 58px;
+      cursor: pointer;
+      background-size: 100% 100%;
+    }
+    .showVehi-btn{
+      @extend .btn-item;
+      background-image: url("../images/bottomimage/bus.png");
+    }
+    .noLine-btn{
+      @extend .btn-item;
+      background-image: url("../images/bottomimage/road.png");
+    }
+    .showLine-btn{
+      @extend .btn-item;
+      background-image: url("../images/bottomimage/road-hover.png");
+    }
+    .noSta-btn{
+      @extend .btn-item;
+      background-image: url("../images/bottomimage/station.png");
+    }
+    .showSta-btn{
+      @extend .btn-item;
+      background-image: url("../images/bottomimage/station-hover.png");
+    }
+    .noPar-btn{
+      @extend .btn-item;
+      background-image: url("../images/bottomimage/p.png");
+    }
+    .showPar-btn{
+      @extend .btn-item;
+      background-image: url("../images/bottomimage/p-hover.png");
+    }
+    .noElec-btn{
+      @extend .btn-item;
+      background-image: url("../images/bottomimage/elec.png");
+    }
+    .showElec-btn{
+      @extend .btn-item;
+      background-image: url("../images/bottomimage/elec-hover.png");
+    }
   }
 </style>
