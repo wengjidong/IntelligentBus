@@ -60,7 +60,7 @@
       this.$nextTick(()=>{
         this.initEsriMap()
         this.add3DTiles()
-        //this.addModels()
+        this.addModels()
         //this.ttCar()
       })
 
@@ -205,7 +205,6 @@
         initEsriMap(){
           this.viewer={};
           // cesium 初始化
-          debugger
           Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0ZDgxYjkxMy05OWI2LTRkYTEtYjA4ZC1kN2Q4Yzc2NzM5M2QiLCJpZCI6MTI5MDAsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1NjIxMzc1NzF9.mU7f3eFJZxPtESiMyetyp4-4JlvB6l-euHELB5q0p_I'
           this.viewer = new Cesium.Viewer('cesiumContainer', {
             geocoder:false,
@@ -220,7 +219,7 @@
             terrainProvider: Cesium.createWorldTerrain(),
             imageryProvider : new Cesium.UrlTemplateImageryProvider({
               //url:'http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}'
-              url : 'https://c.tiles.mapbox.com/v4/mapbox.comic/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYW5hbHl0aWNhbGdyYXBoaWNzIiwiYSI6ImNpd204Zm4wejAwNzYyeW5uNjYyZmFwdWEifQ.7i-VIZZWX8pd1bTfxIVj9g',
+              url : 'https://c.tiles.mapbox.com/v4/mapbox.dark/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYW5hbHl0aWNhbGdyYXBoaWNzIiwiYSI6ImNpd204Zm4wejAwNzYyeW5uNjYyZmFwdWEifQ.7i-VIZZWX8pd1bTfxIVj9g',
             })
           });
           this.viewer._cesiumWidget._creditContainer.style.display = "none"
@@ -282,48 +281,35 @@
             maximumNumberOfLoadedTiles: 1000
           })
           this.viewer.scene.primitives.add(palaceTileset);
-/*          var longitude = 117.2764;
-          var latitude = 31.868;
-          var height = 20;
+
+        },
+        addModels(){
+          var model = new Cesium.Cesium3DTileset({
+            url: 'static/3DData/bus5/tileset.json',
+            maximumScreenSpaceError: 2,
+            maximumNumberOfLoadedTiles: 1000
+          })
+          this.viewer.scene.primitives.add(model);
+          var longitude = 117.3589;
+          var latitude = 31.8702;
+          var height = 100;
           // //缩放
           let params = {
-            tx: 117.2764, //模型中心X轴坐标（经度，单位：十进制度）
-            ty: 31.868, //模型中心Y轴坐标（纬度，单位：十进制度）
+            tx: 117.3589, //模型中心X轴坐标（经度，单位：十进制度）
+            ty: 31.8702, //模型中心Y轴坐标（纬度，单位：十进制度）
             tz: 20, //模型中心Z轴坐标（高程，单位：米）
             rx: 0, //X轴（经度）方向旋转角度（单位：度）
             ry: 0, //Y轴（纬度）方向旋转角度（单位：度）
             rz: -1 //Z轴（高程）方向旋转角度（单位：度）
           };
           var that=this;
-          palaceTileset.readyPromise.then(function(tileset) {
+          model.readyPromise.then(function(tileset) {
             //经纬度、高转笛卡尔坐标
             var position = Cesium.Cartesian3.fromDegrees(longitude, latitude, height);
             var mat = Cesium.Transforms.eastNorthUpToFixedFrame(position);
-            palaceTileset._root.transform =that.update3dtilesMaxtrix(params);
-            // Position tileset
-          })*/
+            model._root.transform =that.update3dtilesMaxtrix(params);
+          })
 
-        },
-        addModels(){
-          // 小车旋转角度
-          let radian = Cesium.Math.toRadians(3.0);
-          // 小车的速度
-          let speed = 60;
-          // 速度矢量
-          let speedVector = new Cesium.Cartesian3();
-          // 起始位置
-          let position = Cesium.Cartesian3.fromDegrees(117.2764,31.868,0);
-          // 用于设置小车方向
-          let hpRoll = new Cesium.HeadingPitchRoll();
-          let fixedFrameTransforms =  Cesium.Transforms.localFrameToFixedFrameGenerator('north', 'west');
-          this.scene=this.viewer.scene;
-          this.carPrimitive = this.scene.primitives.add(
-            Cesium.Model.fromGltf({
-              url: 'static/CesiumMilkTruck.glb',
-              modelMatrix: Cesium.Transforms.headingPitchRollToFixedFrame(position, hpRoll, Cesium.Ellipsoid.WGS84, fixedFrameTransforms),
-              minimumPixelSize: 128,
-            })
-          )
         },
         update3dtilesMaxtrix(params){
           debugger
@@ -337,7 +323,7 @@
           let position = Cesium.Cartesian3.fromDegrees(params.tx, params.ty, params.tz);
           let m = Cesium.Transforms.eastNorthUpToFixedFrame(position);
 
-          let scale = Cesium.Matrix4.fromUniformScale(100);
+          let scale = Cesium.Matrix4.fromUniformScale(1);
           // //缩放
           Cesium.Matrix4.multiply(m, scale, m);
           //旋转、平移矩阵相乘
