@@ -300,7 +300,7 @@
             tz: 20, //模型中心Z轴坐标（高程，单位：米）
             rx: 0, //X轴（经度）方向旋转角度（单位：度）
             ry: 0, //Y轴（纬度）方向旋转角度（单位：度）
-            rz: -1 //Z轴（高程）方向旋转角度（单位：度）
+            rz: -90 //Z轴（高程）方向旋转角度（单位：度）
           };
           var that=this;
           model.readyPromise.then(function(tileset) {
