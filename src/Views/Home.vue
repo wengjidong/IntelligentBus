@@ -225,11 +225,11 @@
           this.viewer._cesiumWidget._creditContainer.style.display = "none"
           // 将三维球定位到中国s
           this.viewer.camera.flyTo({
-            destination: Cesium.Cartesian3.fromDegrees(117.2764, 31.868, 500),
+            destination: Cesium.Cartesian3.fromDegrees(117.36604, 31.86903, 118),
             orientation: {
-              heading :  Cesium.Math.toRadians(0),
-              pitch : Cesium.Math.toRadians(-90),
-              roll : Cesium.Math.toRadians(0)
+              heading :  Cesium.Math.toRadians(287.35),
+              pitch : Cesium.Math.toRadians(-10.12),
+              roll : Cesium.Math.toRadians(359.83)
             },
             duration:15,
             complete:function callback() {
@@ -275,8 +275,8 @@
         },
         add3DTiles(){
           var palaceTileset = new Cesium.Cesium3DTileset({
-            url: 'http://localhost:9000/model/17f5a2b0bff811ea816f5d4af717f9b9/tileset.json',
-             //url: 'http://localhost:9000/model/352bc1a0bad211ea8587391933836df9/tileset.json',
+            //url: 'http://localhost:9000/model/17f5a2b0bff811ea816f5d4af717f9b9/tileset.json',
+             url: 'http://localhost:9000/model/352bc1a0bad211ea8587391933836df9/tileset.json',
             maximumScreenSpaceError: 2,
             maximumNumberOfLoadedTiles: 1000
           })
@@ -308,8 +308,16 @@
             var position = Cesium.Cartesian3.fromDegrees(longitude, latitude, height);
             var mat = Cesium.Transforms.eastNorthUpToFixedFrame(position);
             model._root.transform =that.update3dtilesMaxtrix(params);
+            // 2. Using a HeadingPitchRange offset
+ /*           var center = Cesium.Cartesian3.fromDegrees(117.3589,31.8702);
+            var heading = Cesium.Math.toRadians(50.0);
+            var pitch = Cesium.Math.toRadians(-20.0);
+            var range = 300.0;
+            that.viewer.camera.lookAt(center, new Cesium.HeadingPitchRange(heading, pitch, range));*/
           })
+/*          setTimeout(()=>{
 
+          },10)*/
         },
         update3dtilesMaxtrix(params){
           debugger
