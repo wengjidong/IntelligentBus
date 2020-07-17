@@ -219,21 +219,27 @@
             terrainProvider: Cesium.createWorldTerrain(),
             imageryProvider : new Cesium.UrlTemplateImageryProvider({
               //url:'http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}'
-              url : 'https://c.tiles.mapbox.com/v4/mapbox.dark/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYW5hbHl0aWNhbGdyYXBoaWNzIiwiYSI6ImNpd204Zm4wejAwNzYyeW5uNjYyZmFwdWEifQ.7i-VIZZWX8pd1bTfxIVj9g',
+              url : 'https://c.tiles.mapbox.com/v4/mapbox.comic/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYW5hbHl0aWNhbGdyYXBoaWNzIiwiYSI6ImNpd204Zm4wejAwNzYyeW5uNjYyZmFwdWEifQ.7i-VIZZWX8pd1bTfxIVj9g',
             })
           });
-          this.viewer._cesiumWidget._creditContainer.style.display = "none"
+          this.viewer._cesiumWidget._creditContainer.style.display = "none";
+          var camera=this.viewer.camera;
           // 将三维球定位到中国s
-          this.viewer.camera.flyTo({
-            destination: Cesium.Cartesian3.fromDegrees(117.36604, 31.86903, 118),
-            orientation: {
-              heading :  Cesium.Math.toRadians(287.35),
-              pitch : Cesium.Math.toRadians(-10.12),
-              roll : Cesium.Math.toRadians(359.83)
-            },
-            duration:15,
+          camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(117.36315, 31.86985, 261.22),
+            duration:16,
             complete:function callback() {
               // 定位完成之后的回调函数
+              setTimeout(()=>{
+                camera.flyTo({
+                  destination: Cesium.Cartesian3.fromDegrees(117.36315, 31.86985, 261.22),
+                  orientation: {
+                    heading :  Cesium.Math.toRadians(270.61),
+                    pitch : Cesium.Math.toRadians(-15.94),
+                    roll : Cesium.Math.toRadians(359.82)
+                  },
+                },50)
+              })
             }
           });
         },
@@ -275,8 +281,8 @@
         },
         add3DTiles(){
           var palaceTileset = new Cesium.Cesium3DTileset({
-            //url: 'http://localhost:9000/model/17f5a2b0bff811ea816f5d4af717f9b9/tileset.json',
-             url: 'http://localhost:9000/model/352bc1a0bad211ea8587391933836df9/tileset.json',
+            url: 'http://localhost:9000/model/17f5a2b0bff811ea816f5d4af717f9b9/tileset.json',
+             //url: 'http://localhost:9000/model/352bc1a0bad211ea8587391933836df9/tileset.json',
             maximumScreenSpaceError: 2,
             maximumNumberOfLoadedTiles: 1000
           })
@@ -290,13 +296,13 @@
             maximumNumberOfLoadedTiles: 1000
           })
           this.viewer.scene.primitives.add(model);
-          var longitude = 117.3589;
-          var latitude = 31.8702;
+          var longitude = 117.3543389;
+          var latitude = 31.8699806;
           var height = 100;
           // //缩放
           let params = {
-            tx: 117.3589, //模型中心X轴坐标（经度，单位：十进制度）
-            ty: 31.8702, //模型中心Y轴坐标（纬度，单位：十进制度）
+            tx: 117.3543389, //模型中心X轴坐标（经度，单位：十进制度）
+            ty: 31.8699806, //模型中心Y轴坐标（纬度，单位：十进制度）
             tz: 20, //模型中心Z轴坐标（高程，单位：米）
             rx: 0, //X轴（经度）方向旋转角度（单位：度）
             ry: 0, //Y轴（纬度）方向旋转角度（单位：度）
