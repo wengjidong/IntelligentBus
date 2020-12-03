@@ -32,6 +32,7 @@
 
 <script>
   // 导出组件
+  import axios from 'axios'
   import { getQuatoSetList,tilesurl} from '@/api/basic'
   import 'cesium/Widgets/widgets.css'
   import WeatherModel from "@/components/weatherModel";
@@ -44,11 +45,20 @@
     data() {
       return {
         carPrimitive:'',
-        index:0,
         title:'公交监管平台二三维一体化',
         nowTime:'',
-        isFullScreen:false
+        isFullScreen:false,
+        position:'',
+        carPrimitive :'',
+        pointsArr:[],
+        index:0
       };
+    },
+    created(){
+      var that=this;
+      axios('static/data/GPS轨迹点.json').then(res=>{
+        that.pointsArr=res.data;
+      })
     },
     mounted () {
       /**
@@ -284,7 +294,8 @@
             url: 'http://localhost:9000/model/17f5a2b0bff811ea816f5d4af717f9b9/tileset.json',
              //url: 'http://localhost:9000/model/352bc1a0bad211ea8587391933836df9/tileset.json',
             maximumScreenSpaceError: 2,
-            maximumNumberOfLoadedTiles: 1000
+            maximumNumberOfLoadedTiles: 1000,
+
           })
           this.viewer.scene.primitives.add(palaceTileset);
 
@@ -292,41 +303,31 @@
         addModels(){
           var model = new Cesium.Cesium3DTileset({
             url: 'static/3DData/bus5/tileset.json',
-            maximumScreenSpaceError: 2,
-            maximumNumberOfLoadedTiles: 1000
           })
-          this.viewer.scene.primitives.add(model);
-          var longitude = 117.3543389;
-          var latitude = 31.8699806;
-          var height = 100;
-          // //缩放
-          let params = {
-            tx: 117.3543389, //模型中心X轴坐标（经度，单位：十进制度）
-            ty: 31.8699806, //模型中心Y轴坐标（纬度，单位：十进制度）
-            tz: 20, //模型中心Z轴坐标（高程，单位：米）
-            rx: 0, //X轴（经度）方向旋转角度（单位：度）
-            ry: 0, //Y轴（纬度）方向旋转角度（单位：度）
-            rz: -90 //Z轴（高程）方向旋转角度（单位：度）
-          };
+          this.carPrimitive =this.viewer.scene.primitives.add(model);
           var that=this;
           model.readyPromise.then(function(tileset) {
-            //经纬度、高转笛卡尔坐标
-            var position = Cesium.Cartesian3.fromDegrees(longitude, latitude, height);
-            var mat = Cesium.Transforms.eastNorthUpToFixedFrame(position);
-            model._root.transform =that.update3dtilesMaxtrix(params);
-            // 2. Using a HeadingPitchRange offset
- /*           var center = Cesium.Cartesian3.fromDegrees(117.3589,31.8702);
-            var heading = Cesium.Math.toRadians(50.0);
-            var pitch = Cesium.Math.toRadians(-20.0);
-            var range = 300.0;
-            that.viewer.camera.lookAt(center, new Cesium.HeadingPitchRange(heading, pitch, range));*/
-          })
-/*          setTimeout(()=>{
+            debugger
+            if(that.index<that.pointsArr.length){
+              model._root.transform =that.update3dtilesMaxtrix(that.pointsArr[that.index]);
+              that.index++;
+            }
+            that.addModels()
+/*            //获取数据
+            axios('static/data/GPS轨迹点.json').then(res=>{
+              let data=res.data;
+              //model._root.transform =that.update3dtilesMaxtrix(data[0]);
+              for(let i=0;i<data.length;i++){
+                setTimeout(()=>{
+                  model._root.transform =that.update3dtilesMaxtrix(data[i]);
+                },10000*i)
+              }
+            })*/
 
-          },10)*/
+            //that.ttCar();
+          })
         },
         update3dtilesMaxtrix(params){
-          debugger
           let mx = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(params.rx));
           let my = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(params.ry));
           let mz = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(params.rz));
@@ -334,7 +335,7 @@
           let rotationY = Cesium.Matrix4.fromRotationTranslation(my);
           let rotationZ = Cesium.Matrix4.fromRotationTranslation(mz);
           //平移
-          let position = Cesium.Cartesian3.fromDegrees(params.tx, params.ty, params.tz);
+          let position = Cesium.Cartesian3.fromDegrees(params.x, params.y, params.z);
           let m = Cesium.Transforms.eastNorthUpToFixedFrame(position);
 
           let scale = Cesium.Matrix4.fromUniformScale(1);
@@ -351,21 +352,22 @@
           setTimeout(()=>{
             this.index++;
             this.moveCar(this.index);
-          },1000)
+          },5000)
         },
       // 移动小车
       moveCar(index) {
+          debugger
           let speedVector = new Cesium.Cartesian3();
           var speed=60;
-          let position = Cesium.Cartesian3.fromDegrees(117.2764+index,31.868,0);
+          let position = Cesium.Cartesian3.fromDegrees(117.3543389+index,31.8699806,0);
           let hpRoll = new Cesium.HeadingPitchRoll();
           let fixedFrameTransforms =  Cesium.Transforms.localFrameToFixedFrameGenerator('north', 'west');
            // 计算速度矩阵
           speedVector = Cesium.Cartesian3.multiplyByScalar(Cesium.Cartesian3.UNIT_X,speed,speedVector);
           // 根据速度计算出下一个位置的坐标
-          position = Cesium.Matrix4.multiplyByPoint(this.carPrimitive.modelMatrix ,speedVector, position);
+          this.position = Cesium.Matrix4.multiplyByPoint( this.carPrimitive.modelMatrix ,speedVector, position);
           // 小车移动
-          Cesium.Transforms.headingPitchRollToFixedFrame(position, hpRoll, Cesium.Ellipsoid.WGS84, fixedFrameTransforms, this.carPrimitive.modelMatrix);
+          Cesium.Transforms.headingPitchRollToFixedFrame(this.position, hpRoll, Cesium.Ellipsoid.WGS84, fixedFrameTransforms, this.carPrimitive.modelMatrix);
           this.ttCar();
        },
       handleFullScreen(){
