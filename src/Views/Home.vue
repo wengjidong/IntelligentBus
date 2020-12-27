@@ -49,16 +49,15 @@
         nowTime:'',
         isFullScreen:false,
         position:'',
-        carPrimitive :'',
         pointsArr:[],
         index:0
       };
     },
     created(){
-      var that=this;
+/*      var that=this;
       axios('static/data/GPS轨迹点.json').then(res=>{
         that.pointsArr=res.data;
-      })
+      })*/
     },
     mounted () {
       /**
@@ -70,7 +69,7 @@
       this.$nextTick(()=>{
         this.initEsriMap()
         this.add3DTiles()
-        this.addModels()
+        //this.addModels()
         //this.ttCar()
       })
 
@@ -229,7 +228,7 @@
             terrainProvider: Cesium.createWorldTerrain(),
             imageryProvider : new Cesium.UrlTemplateImageryProvider({
               //url:'http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}'
-              url : 'https://c.tiles.mapbox.com/v4/mapbox.comic/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYW5hbHl0aWNhbGdyYXBoaWNzIiwiYSI6ImNpd204Zm4wejAwNzYyeW5uNjYyZmFwdWEifQ.7i-VIZZWX8pd1bTfxIVj9g',
+              url : 'http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}',
             })
           });
           this.viewer._cesiumWidget._creditContainer.style.display = "none";
@@ -291,7 +290,7 @@
         },
         add3DTiles(){
           var palaceTileset = new Cesium.Cesium3DTileset({
-            url: 'http://localhost:9000/model/17f5a2b0bff811ea816f5d4af717f9b9/tileset.json',
+            url: 'http://localhost:9000/model/f4cc8d5046a011ebb000c53923886de9/tileset.json',
              //url: 'http://localhost:9000/model/352bc1a0bad211ea8587391933836df9/tileset.json',
             maximumScreenSpaceError: 2,
             maximumNumberOfLoadedTiles: 1000,
@@ -307,7 +306,6 @@
           this.carPrimitive =this.viewer.scene.primitives.add(model);
           var that=this;
           model.readyPromise.then(function(tileset) {
-            debugger
             if(that.index<that.pointsArr.length){
               model._root.transform =that.update3dtilesMaxtrix(that.pointsArr[that.index]);
               that.index++;
