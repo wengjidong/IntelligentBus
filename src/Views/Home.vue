@@ -4,27 +4,45 @@
       <div class="user-title">{{title}}</div>
       <div class="top-right">
         <div class="now-data">{{nowTime}}</div>
-        <weather-model></weather-model>
+        <weather-model ref="weather"></weather-model>
         <div :class="['iconfont', 'full-icon', isFullScreen?'icon-tuichuquanping':'icon-quanping']"
              @click="handleFullScreen"></div>
 <!--        <div class="iconfont yuan-icon icon-yuan" v-if="otherFeature.plan" @click="initPlanDialog(null, null, null)"></div>-->
       </div>
     </div>
+    <div class="change-box">
+      <div :class="[mapDataControl.changeModel?'item-box-bus-active':'item-box-bus']" @click="change">
+        <span class="bus"></span>
+        模型
+      </div>
+      <div class="item-box-bus">
+        <span class="kl"></span>
+        客流
+      </div>
+      <div class="item-box-bus">
+        <span class="lw"></span>
+        路网
+      </div>
+      <div class="item-box-bus">
+        <span class="zd"></span>
+        站台
+      </div>
+    </div>
     <div class="control-bottom">
       <el-tooltip content="车辆" placement="top" effect="light">
-        <div class="showVehi-btn"></div>
+        <div :class="[mapDataControl.showVehi?'showVehi-btn':'noVehi-btn']"></div>
       </el-tooltip>
       <el-tooltip content="线路" placement="top" effect="light">
-        <div class="showLine-btn"></div>
+        <div :class="[mapDataControl.showLine?'showLine-btn':'noLine-btn']"></div>
       </el-tooltip>
       <el-tooltip content="站点" placement="top" effect="light">
-        <div class="showSta-btn"></div>
+        <div :class="[mapDataControl.showStation?'showSta-btn':'noSta-btn']"></div>
       </el-tooltip>
       <el-tooltip content="停车场" placement="top" effect="light">
-        <div class="showPar-btn"></div>
+        <div :class="[mapDataControl.showParking?'showPar-btn':'noPar-btn']"></div>
       </el-tooltip>
       <el-tooltip  content="电子站牌" placement="top" effect="light">
-        <div class="showElec-btn"></div>
+        <div :class="[mapDataControl.showElecStation?'showElec-btn':'noElec-btn']"></div>
       </el-tooltip>
     </div>
   </div>
@@ -51,7 +69,16 @@
         position:'',
         carPrimitive :'',
         pointsArr:[],
-        index:0
+        index:0,
+        mapDataControl:{
+          changeModel:true,
+          showVehi: false,
+          showLine:false,
+          showStation:false,
+          showParking:false,
+          showElecStation:false
+        },
+        palaceTileset:null
       };
     },
     created(){
@@ -70,7 +97,7 @@
       this.$nextTick(()=>{
         this.initEsriMap()
         this.add3DTiles()
-        this.addModels()
+        //this.addModels()
         //this.ttCar()
       })
 
@@ -150,6 +177,8 @@
           duration:15,
           complete:function callback() {
             // 定位完成之后的回调函数
+            alert(this.viewer)
+            this.$refs.weather.init(this.viewer);
           }
         });
 
@@ -228,12 +257,13 @@
             vrButton:false,
             terrainProvider: Cesium.createWorldTerrain(),
             imageryProvider : new Cesium.UrlTemplateImageryProvider({
-              //url:'http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}'
-              url : 'https://c.tiles.mapbox.com/v4/mapbox.comic/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYW5hbHl0aWNhbGdyYXBoaWNzIiwiYSI6ImNpd204Zm4wejAwNzYyeW5uNjYyZmFwdWEifQ.7i-VIZZWX8pd1bTfxIVj9g',
+              url:'http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}'
+              //url : 'https://c.tiles.mapbox.com/v4/mapbox.comic/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYW5hbHl0aWNhbGdyYXBoaWNzIiwiYSI6ImNpd204Zm4wejAwNzYyeW5uNjYyZmFwdWEifQ.7i-VIZZWX8pd1bTfxIVj9g',
             })
           });
           this.viewer._cesiumWidget._creditContainer.style.display = "none";
           var camera=this.viewer.camera;
+          var _this=this;
           // 将三维球定位到中国s
           camera.flyTo({
             destination: Cesium.Cartesian3.fromDegrees(117.36315, 31.86985, 261.22),
@@ -249,6 +279,7 @@
                     roll : Cesium.Math.toRadians(359.82)
                   },
                 },50)
+                _this.$refs.weather.init(_this.viewer);
               })
             }
           });
@@ -290,16 +321,20 @@
           }));
         },
         add3DTiles(){
-          var palaceTileset = new Cesium.Cesium3DTileset({
-            url: 'http://localhost:9000/model/17f5a2b0bff811ea816f5d4af717f9b9/tileset.json',
+          this.palaceTileset = new Cesium.Cesium3DTileset({
+            url: 'http://localhost:9000/model/b1fde28048ad11eb8d6e899647dc5b46/tileset.json',
              //url: 'http://localhost:9000/model/352bc1a0bad211ea8587391933836df9/tileset.json',
             maximumScreenSpaceError: 2,
             maximumNumberOfLoadedTiles: 1000,
 
           })
-          this.viewer.scene.primitives.add(palaceTileset);
+          this.palaceTileset.style=new Cesium.Cesium3DTileStyle({
+            color : 'rgba(0,80,165,1)',
+          })
+          this.viewer.scene.primitives.add(this.palaceTileset);
 
         },
+
         addModels(){
           var model = new Cesium.Cesium3DTileset({
             url: 'static/3DData/bus5/tileset.json',
@@ -326,6 +361,15 @@
 
             //that.ttCar();
           })
+        },
+        change(){
+          this.mapDataControl.changeModel=!this.mapDataControl.changeModel;
+          if(this.mapDataControl.changeModel){
+            this.palaceTileset.show=true
+          }
+          else{
+            this.palaceTileset.show=false;
+          }
         },
         update3dtilesMaxtrix(params){
           let mx = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(params.rx));
@@ -408,6 +452,75 @@
     background-image:url('../images/top-bg.png');
     position: absolute;
     z-index: 100;
+  }
+  .change-box{
+    position: absolute;
+    height: 200px;
+    width:100px;
+    top: 8%;
+    right: 2%;
+    background-size: 100%;
+    z-index: 55;
+    .item-box-bus-active{
+      height: 53px;
+      width: 100px;
+      line-height: 50px;
+      text-align: center;
+      background:url('../images/map/bg1.png') no-repeat;
+      cursor: pointer;
+      color: #fff;
+      font-size: 16px;
+      font-family: Microsoft YaHei;
+      .bus{
+        background:url('../images/map/model.png') no-repeat;
+      }
+      .kl{
+        background:url('../images/map/bgkl.png') no-repeat;
+      }
+      .lw{
+        background:url('../images/map/bglw.png') no-repeat;
+      }
+      .zd{
+        background:url('../images/map/bgzd.png') no-repeat;
+      }
+      span {
+        display: inline-block;
+        width: 28px;
+        height: 28px;
+        vertical-align: middle;
+        margin-right: 5px;
+      }
+    }
+    .item-box-bus{
+      height: 53px;
+      width: 100px;
+      line-height: 50px;
+      text-align: center;
+      background:url('../images/map/bg2.png') no-repeat;
+      cursor: pointer;
+      color: #fff;
+      font-size: 16px;
+      font-family: Microsoft YaHei;
+      .bus{
+        background:url('../images/map/model.png') no-repeat;
+      }
+      .kl{
+        background:url('../images/map/bgkl.png') no-repeat;
+      }
+      .lw{
+        background:url('../images/map/bglw.png') no-repeat;
+      }
+      .zd{
+        background:url('../images/map/bgzd.png') no-repeat;
+      }
+      span {
+        display: inline-block;
+        width: 28px;
+        height: 28px;
+        vertical-align: middle;
+        margin-right: 5px;
+      }
+    }
   }
   .menu{
     width: 90%;
@@ -526,6 +639,10 @@
       background-size: 100% 100%;
     }
     .showVehi-btn{
+      @extend .btn-item;
+      background-image: url("../images/bottomimage/bus-hover.png");
+    }
+    .noVehi-btn{
       @extend .btn-item;
       background-image: url("../images/bottomimage/bus.png");
     }
